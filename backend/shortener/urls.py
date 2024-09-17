@@ -1,10 +1,10 @@
-from django.contrib import admin
+
 from django.urls import path
-from . import views
-from .views import ShortenerListView
+from .views import ShortenerCreateView, ShortenerRetrieveView
 
 app_name = "shortener"
 
 urlpatterns = [
-    path("", ShortenerListView.as_view(), name="shorten"),
+    path("", ShortenerCreateView.as_view(), name="create"),
+    path("<str:short_code>/",ShortenerRetrieveView.as_view(),name="retrieve",)
 ]
