@@ -22,17 +22,6 @@
             <p><a :href="shortUrl" x-text="shortUrl" target="_blank"></a></p>
         </div>
 
-        <form @submit.prevent="retrieveLongUrl">
-            <label for="short-code">輸入短網址代碼:</label>
-            <input type="text" id="short-code" x-model="shortCode" required>
-            <button type="submit">Retrieve</button>
-        </form>
-
-        <div x-show="longUrlRetrieved">
-            <h2>原本網址:</h2>
-            <p><a :href="longUrlRetrieved" x-text="longUrlRetrieved" target="_blank"></a></p>
-        </div>
-
         <div x-show="errorMessage" style="color: red;">
             <p x-text="errorMessage"></p>
         </div>

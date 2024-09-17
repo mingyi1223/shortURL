@@ -2,8 +2,6 @@ function urlShortener() {
     return {
         longUrl: '',
         shortUrl: '',
-        shortCode: '',
-        longUrlRetrieved: '',
         errorMessage: '',
 
         async createShortUrl() {
@@ -29,23 +27,5 @@ function urlShortener() {
                 this.errorMessage = 'Network error';
             }
         },
-
-        async retrieveLongUrl() {
-            this.errorMessage = '';
-            this.longUrlRetrieved = '';
-
-            try {
-                const response = await fetch(`http://localhost:8000/shortener/${this.shortCode}/`);
-                if (response.ok) {
-                    const data = await response.json();
-                    this.longUrlRetrieved = data.long;
-                } else {
-                    const errorData = await response.json();
-                    this.errorMessage = errorData.detail || 'Error retrieving original URL';
-                }
-            } catch (error) {
-                this.errorMessage = 'Network error';
-            }
-        }
     }
 }

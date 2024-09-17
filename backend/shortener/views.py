@@ -1,7 +1,8 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.conf import settings
 from .serializer import SiteSerializer
 from .models import Site
+from django.views import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -28,16 +29,15 @@ class ShortenerCreateView(APIView):
                 short_code = generate_short_code()
                 short_url = base_url + short_code
 
-            site_instance = serializer.save(short=short_url)
+            site_instance = Site.objects.create(long=long_url, short=short_url)
 
             return Response(SiteSerializer(site_instance).data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ShortenerRetrieveView(APIView):
-    def get(self, request, short_code):
+class ShortenerRedirectView(View):
+    def get(self, request, short_code, *args, **kwargs):
         short_url = settings.BASE_URL + short_code
         site_instance = get_object_or_404(Site, short=short_url)
-        serializer = SiteSerializer(site_instance)
-        return Response(serializer.data)
+        return redirect(site_instance.long)
